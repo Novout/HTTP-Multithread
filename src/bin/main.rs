@@ -54,9 +54,8 @@ fn handle_connection(mut stream: TcpStream) -> () {
     );
 
     let response = format!(
-        "{}\r\n{}\r\n{}\r\n{}\r\nAccept-Language: *\r\nAccess-Control-Allow-Origin: *\r\nContent-Lenght: {}\r\nContent-Type: text/html; charset=utf-8\r\n\r\n{}",
+        "{}\r\nConnection: keep-alive\r\n{}\r\n{}\r\nAccept-Language: *\r\nAccess-Control-Allow-Origin: *\r\nContent-Lenght: {}\r\nContent-Type: text/html; charset=utf-8\r\n\r\n{}",
         status_line,
-        "Connection: keep-alive",
         date_response,
         server_response,
         contents.len(),
