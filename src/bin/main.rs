@@ -10,6 +10,7 @@ use http_multithread::ThreadPool;
 extern crate image_base64;
 
 static DEFAULT_GET: &[u8; 16] = b"GET / HTTP/1.1\r\n";
+static DEFAULT_FAVICON: &[u8; 27] = b"GET /favicon.ico HTTP/1.1\r\n";
 // static DEFAULT_POST: &[u8; 17] = b"POST / HTTP/1.1\r\n";
 // static DEFAULT_PUT: &[u8; 16] = b"PUT / HTTP/1.1\r\n";
 // static DEFAULT_DELETE: &[u8; 19] = b"DELETE / HTTP/1.1\r\n";
@@ -81,7 +82,11 @@ fn handle_connection(mut stream: TcpStream) -> () {
     } else if request.contains(CONTENT_TYPE_JPEG) {
         (image_base64::to_base64("src/assets/ifmg.jpg"), "image/jpeg")
     } else {
-        panic!();
+        if !buffer.starts_with(DEFAULT_FAVICON) {
+            panic!();
+        } else {
+            (fs::read_to_string(filename).unwrap(), "text/plain")
+        }
     };
 
     let response = format!(
@@ -94,16 +99,6 @@ fn handle_connection(mut stream: TcpStream) -> () {
         contents
     );
  
-
-    /*
-    let response = format!(
-        "{}\r\nContent-Length: {}\r\n\r\n{}",
-        status_line,
-        contents.len(),
-        contents
-    );
-    */
-
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
 }
