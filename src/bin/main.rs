@@ -80,6 +80,7 @@ fn handle_connection(mut stream: TcpStream) -> () {
     } else if request.contains(CONTENT_TYPE_JSON) {
         (fs::read_to_string("src/data/base.json").unwrap(), "application/json")
     } else if request.contains(CONTENT_TYPE_JPEG) {
+        // return base64 and not deflate/gzip content.
         (image_base64::to_base64("src/assets/ifmg.jpg"), "image/jpeg")
     } else {
         if !buffer.starts_with(DEFAULT_FAVICON) {

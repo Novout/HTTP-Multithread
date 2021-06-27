@@ -2,6 +2,12 @@
 
 Some tests to learn rust.
 
+## Docs
+
+`cargo doc`
+
+Access `target/doc`
+
 ## Run
 
 `cargo build`
